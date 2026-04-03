@@ -107,14 +107,59 @@
         .gen-btn .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
         @keyframes spin{to{transform:rotate(360deg)}}
 
-        /* ═══ PROGRESS BAR (loading) ═══ */
-        .progress-strip{position:fixed;top:52px;left:0;right:0;height:3px;z-index:60;display:none}
-        .progress-strip.vis{display:block}
-        .progress-bg{height:100%;background:var(--rule);position:relative}
-        .progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),#60A5FA);border-radius:0 2px 2px 0;transition:width .5s ease;width:0}
-        .progress-label{position:fixed;top:60px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;color:var(--ink3);background:var(--paper);padding:6px 16px;border-radius:16px;border:1px solid var(--rule);box-shadow:var(--shadow-card);z-index:60;display:none;white-space:nowrap}
-        .progress-label.vis{display:block;animation:fadeIn .2s ease}
-        @keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(-4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+        /* ═══ SEARCH SCREEN ═══ */
+        .search-screen{display:none;max-width:860px;margin:0 auto;padding:80px 24px;text-align:center}
+        .search-screen.vis{display:block;animation:fadeIn .3s ease}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+        /* Animated globe */
+        .sg-wrap{width:160px;height:160px;margin:0 auto 32px;position:relative}
+        .sg-globe{position:absolute;inset:0;animation:sg-spin 12s linear infinite}
+        @keyframes sg-spin{to{transform:rotate(360deg)}}
+        .sg-globe svg{width:100%;height:100%;color:var(--blue);opacity:.12}
+        .sg-ring{position:absolute;inset:0;border:2px solid transparent;border-radius:50%}
+        .sg-ring.r1{border-top-color:var(--blue);animation:orbit 1.4s linear infinite}
+        .sg-ring.r2{inset:16px;border-top-color:var(--violet);animation:orbit 2s linear infinite reverse}
+        .sg-ring.r3{inset:32px;border-top-color:var(--gold);animation:orbit 2.6s linear infinite}
+        @keyframes orbit{to{transform:rotate(360deg)}}
+        .sg-core{position:absolute;top:50%;left:50%;width:10px;height:10px;background:var(--blue);border-radius:50%;transform:translate(-50%,-50%);animation:sg-pulse 1.5s ease infinite}
+        @keyframes sg-pulse{0%,100%{opacity:.3;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(2)}}
+
+        /* Scanning dots floating around */
+        .sg-dots{position:absolute;inset:-20px}
+        .sg-dot{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--blue);opacity:0;animation:sg-dot-fly 3s ease-in-out infinite}
+        .sg-dot:nth-child(1){top:10%;left:20%;animation-delay:0s}
+        .sg-dot:nth-child(2){top:30%;right:10%;animation-delay:.6s}
+        .sg-dot:nth-child(3){bottom:20%;left:15%;animation-delay:1.2s}
+        .sg-dot:nth-child(4){bottom:10%;right:20%;animation-delay:1.8s}
+        .sg-dot:nth-child(5){top:50%;left:5%;animation-delay:.3s}
+        .sg-dot:nth-child(6){top:15%;right:25%;animation-delay:.9s}
+        @keyframes sg-dot-fly{0%{opacity:0;transform:scale(0)}30%{opacity:.6;transform:scale(1)}70%{opacity:.6;transform:scale(1)}100%{opacity:0;transform:scale(0) translateY(-10px)}}
+
+        .ss-title{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--ink);margin-bottom:8px}
+        .ss-query{font-size:15px;color:var(--ink3);margin-bottom:28px;min-height:24px}
+
+        /* Step progress */
+        .ss-steps{display:flex;align-items:center;justify-content:center;gap:8px;max-width:400px;margin:0 auto 20px}
+        .ss-step{height:4px;flex:1;border-radius:2px;background:var(--rule);overflow:hidden;transition:all .3s}
+        .ss-step .ss-fill{height:100%;width:0;border-radius:2px;background:var(--blue);transition:width .6s ease}
+        .ss-step.done .ss-fill{width:100%;background:var(--sage)}
+        .ss-step.active .ss-fill{width:100%;background:var(--blue);animation:ss-shimmer 1.2s ease infinite}
+        @keyframes ss-shimmer{0%{opacity:.5}50%{opacity:1}100%{opacity:.5}}
+
+        .ss-counter{font-family:var(--mono);font-size:11px;color:var(--ink4);margin-bottom:12px}
+
+        /* Topic list with live status */
+        .ss-topics{display:flex;flex-direction:column;gap:6px;max-width:340px;margin:0 auto}
+        .ss-topic{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:var(--r2);font-size:13px;font-weight:500;transition:all .2s}
+        .ss-topic.pending{color:var(--ink4)}
+        .ss-topic.active{background:var(--blue-soft);color:var(--blue)}
+        .ss-topic.done{color:var(--sage)}
+        .ss-topic.error{color:var(--terra)}
+        .ss-topic .st-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0}
+        .ss-topic .st-status{margin-left:auto;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.5px}
+        .ss-topic.active .st-status{animation:pulse-d 1.2s ease infinite}
+        .ss-topic.active .st-spinner{width:12px;height:12px;border:1.5px solid rgba(0,82,204,.2);border-top-color:var(--blue);border-radius:50%;animation:spin .6s linear infinite;margin-left:auto;flex-shrink:0}
 
         /* ═══ REPORT ═══ */
         .report{max-width:860px;margin:0 auto;padding:0 24px 80px;display:none}
@@ -236,9 +281,44 @@
     </div>
 </header>
 
-<!-- PROGRESS BAR -->
-<div class="progress-strip" id="progStrip"><div class="progress-bg"><div class="progress-fill" id="progFill"></div></div></div>
-<div class="progress-label" id="progLabel"></div>
+<!-- SEARCH SCREEN -->
+<div class="search-screen" id="searchScreen">
+    <div class="sg-wrap">
+        <!-- Animated globe background -->
+        <div class="sg-globe">
+            <svg viewBox="0 0 160 160" fill="none">
+                <circle cx="80" cy="80" r="72" stroke="currentColor" stroke-width="1"/>
+                <circle cx="80" cy="80" r="60" stroke="currentColor" stroke-width=".6"/>
+                <ellipse cx="80" cy="80" rx="42" ry="72" stroke="currentColor" stroke-width=".8"/>
+                <ellipse cx="80" cy="80" rx="22" ry="72" stroke="currentColor" stroke-width=".5"/>
+                <ellipse cx="80" cy="80" rx="72" ry="24" stroke="currentColor" stroke-width=".6"/>
+                <line x1="8" y1="56" x2="152" y2="56" stroke="currentColor" stroke-width=".4"/>
+                <line x1="8" y1="80" x2="152" y2="80" stroke="currentColor" stroke-width=".6"/>
+                <line x1="8" y1="104" x2="152" y2="104" stroke="currentColor" stroke-width=".4"/>
+            </svg>
+        </div>
+        <!-- Orbital rings -->
+        <div class="sg-ring r1"></div>
+        <div class="sg-ring r2"></div>
+        <div class="sg-ring r3"></div>
+        <div class="sg-core"></div>
+        <!-- Floating dots -->
+        <div class="sg-dots">
+            <div class="sg-dot"></div><div class="sg-dot"></div><div class="sg-dot"></div>
+            <div class="sg-dot"></div><div class="sg-dot"></div><div class="sg-dot"></div>
+        </div>
+    </div>
+
+    <div class="ss-title">Searching the web</div>
+    <div class="ss-query" id="ssQuery">Preparing queries...</div>
+
+    <!-- Step progress bars -->
+    <div class="ss-steps" id="ssSteps"></div>
+    <div class="ss-counter" id="ssCounter"></div>
+
+    <!-- Topic list -->
+    <div class="ss-topics" id="ssTopics"></div>
+</div>
 
 <!-- HOMEPAGE -->
 <div class="homepage" id="homepage">
@@ -483,39 +563,75 @@ async function generate(){
     if(!queries.length){ toast('Add at least one topic'); return; }
 
     const btn = document.getElementById('genBtn');
-    const strip = document.getElementById('progStrip');
-    const fill = document.getElementById('progFill');
-    const label = document.getElementById('progLabel');
+    const ss = document.getElementById('searchScreen');
     const rpt = document.getElementById('report');
 
     btn.disabled=true;
     btn.innerHTML='<div class="spinner"></div> Generating...';
     rpt.classList.remove('vis'); rpt.innerHTML='';
     document.getElementById('homepage').style.display='none';
-    strip.classList.add('vis');
-    label.classList.add('vis');
-    fill.style.width='0%';
+
+    // Build search screen UI
+    const steps = document.getElementById('ssSteps');
+    const topics = document.getElementById('ssTopics');
+    steps.innerHTML = queries.map((_,i) => `<div class="ss-step" id="sss-${i}"><div class="ss-fill"></div></div>`).join('');
+    topics.innerHTML = queries.map((q,i) => `
+        <div class="ss-topic pending" id="sst-${i}">
+            <span class="st-icon">${q.icon}</span>
+            ${esc(q.label)}
+            <span class="st-status">waiting</span>
+        </div>
+    `).join('');
+    document.getElementById('ssCounter').textContent = `0 of ${queries.length}`;
+    document.getElementById('ssQuery').textContent = 'Preparing queries...';
+    ss.classList.add('vis');
 
     const results = [];
     let totalSrc = 0;
 
     for(let i=0; i<queries.length; i++){
         const q = queries[i];
-        label.textContent = `${q.icon} Researching: ${q.label} (${i+1}/${queries.length})`;
-        fill.style.width = (i/queries.length*100)+'%';
+
+        // Update search screen
+        document.getElementById('ssQuery').textContent = q.label;
+        document.getElementById('ssCounter').textContent = `${i+1} of ${queries.length}`;
+
+        // Mark step active
+        const step = document.getElementById('sss-'+i);
+        if(step) step.classList.add('active');
+
+        // Mark topic active
+        const topic = document.getElementById('sst-'+i);
+        if(topic){
+            topic.className = 'ss-topic active';
+            topic.innerHTML = `<span class="st-icon">${q.icon}</span>${esc(q.label)}<div class="st-spinner"></div>`;
+        }
 
         try{
             const data = await fetchAPI(q.query, apiKey);
             results.push(data);
-            totalSrc += (data.sources||[]).length;
+            const sc = (data.sources||[]).length;
+            totalSrc += sc;
+            if(step){ step.classList.remove('active'); step.classList.add('done'); }
+            if(topic){
+                topic.className = 'ss-topic done';
+                topic.innerHTML = `<span class="st-icon">${q.icon}</span>${esc(q.label)}<span class="st-status">${sc} sources</span>`;
+            }
         }catch(err){
             results.push({error:err.message});
+            if(step){ step.classList.remove('active'); step.classList.add('done'); }
+            if(topic){
+                topic.className = 'ss-topic error';
+                topic.innerHTML = `<span class="st-icon">${q.icon}</span>${esc(q.label)}<span class="st-status">failed</span>`;
+            }
         }
-        fill.style.width = ((i+1)/queries.length*100)+'%';
     }
 
-    strip.classList.remove('vis');
-    label.classList.remove('vis');
+    // Brief pause to let user see completion, then show report
+    document.getElementById('ssQuery').textContent = 'Building your briefing...';
+    await new Promise(r => setTimeout(r, 600));
+
+    ss.classList.remove('vis');
     buildReport(results, totalSrc);
     btn.disabled=false;
     btn.innerHTML='Generate Briefing';
