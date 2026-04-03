@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linkup Morning Report — EdTech India</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --bg:#FFF;--bg2:#FAFAFA;--bg3:#F5F5F5;--bg4:#EDEDEB;
+            --dark:#0D0D0D;--dark2:#141414;--dark3:#1A1A1A;--dark4:#222;
+            --t1:#1A1A1A;--t2:#555;--t3:#8C8C8C;--t4:#B0B0B0;
+            --acc:#0052CC;--acc2:#003D99;--acc-bg:#E8F0FE;--acc-light:#F0F5FF;
+            --brd:#E5E5E5;--brd2:#D0D0D0;--brd3:#F0F0F0;
+            --ok:#059669;--ok-bg:#ECFDF5;--ok-t:#065F46;
+            --err:#DC2626;--err-bg:#FEF2F2;
+            --warn:#D97706;--warn-bg:#FFFBEB;
+            --r:8px;--r2:12px;--r3:16px;--r4:20px;
+            --f:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+            --m:'JetBrains Mono','SF Mono','Consolas',monospace;
+            --shadow-sm:0 1px 2px rgba(0,0,0,.05);
+            --shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
+            --shadow-md:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);
+            --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);
+        }
+        body{font-family:var(--f);background:var(--bg2);color:var(--t1);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+        /* NAV */
+        .nav{display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:56px;border-bottom:1px solid var(--brd);background:var(--bg);position:sticky;top:0;z-index:100}
+        .nav::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:var(--acc)}
+        .nav-l{display:flex;align-items:center;gap:12px}
+        .nav-logo svg{height:22px;width:auto;display:block}
+        .nav-sep{width:1px;height:20px;background:var(--brd)}
+        .nav-t{font-size:14px;font-weight:600;color:var(--t1)}
+        .nav-tag{font-family:var(--m);font-size:9px;font-weight:500;color:var(--acc);background:var(--acc-bg);border:1px solid rgba(0,82,204,.15);padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.8px}
+        .nav-r{display:flex;align-items:center;gap:10px}
+        .nav-kl{font-family:var(--m);font-size:10px;color:var(--t4);text-transform:uppercase;letter-spacing:.5px}
+        .nav-ki{font-family:var(--m);font-size:12px;padding:6px 12px;border:1px solid var(--brd);border-radius:6px;width:220px;outline:none;transition:all .2s;background:var(--bg);color:var(--t1)}
+        .nav-ki:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(0,82,204,.08)}
+        .nav-ki.ok{border-color:var(--ok)}
+        .nav-ks{font-family:var(--m);font-size:10px;color:var(--ok);min-width:28px}
+
+        /* HERO */
+        .hero{background:var(--bg);border-bottom:1px solid var(--brd);padding:48px 32px 40px;text-align:center}
+        .hero-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--m);font-size:10px;font-weight:500;color:var(--acc);background:var(--acc-bg);border:1px solid rgba(0,82,204,.12);padding:5px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px}
+        .hero-badge .dot{width:6px;height:6px;background:var(--acc);border-radius:50%;animation:pulse-dot 2s ease infinite}
+        @keyframes pulse-dot{0%,100%{opacity:.5}50%{opacity:1}}
+        .hero h1{font-size:36px;font-weight:800;letter-spacing:-1.2px;color:var(--t1);margin-bottom:8px;line-height:1.15}
+        .hero-date{font-family:var(--m);font-size:13px;color:var(--t3);letter-spacing:.3px}
+        .hero-sub{font-size:15px;color:var(--t2);max-width:540px;margin:12px auto 0;line-height:1.6}
+
+        /* CONTAINER */
+        .container{max-width:960px;margin:0 auto;padding:32px 24px 64px}
+
+        /* SETUP CARD */
+        .setup-card{background:var(--bg);border:1px solid var(--brd);border-radius:var(--r3);padding:28px;margin-bottom:24px;box-shadow:var(--shadow-sm)}
+        .setup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+        .setup-title{font-family:var(--m);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--t3)}
+        .setup-status{font-family:var(--m);font-size:10px;color:var(--t4)}
+
+        /* QUERY CARDS */
+        .queries-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+        .query-card{border:1.5px solid var(--brd);border-radius:var(--r2);padding:16px;cursor:default;transition:all .15s;background:var(--bg);position:relative;overflow:hidden}
+        .query-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc);opacity:0;transition:opacity .15s}
+        .query-card.active{border-color:var(--acc);background:var(--acc-light)}
+        .query-card.active::before{opacity:1}
+        .query-card.done{border-color:var(--ok)}
+        .query-card.done::before{background:var(--ok);opacity:1}
+        .query-card.error{border-color:var(--err)}
+        .query-card.error::before{background:var(--err);opacity:1}
+        .qc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+        .qc-label{font-size:14px;font-weight:600;color:var(--t1)}
+        .qc-badge{font-family:var(--m);font-size:9px;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.4px}
+        .qc-badge.pending{background:var(--bg3);color:var(--t3)}
+        .qc-badge.running{background:var(--acc-bg);color:var(--acc);animation:pulse-badge 1.5s ease infinite}
+        .qc-badge.done{background:var(--ok-bg);color:var(--ok-t)}
+        .qc-badge.error{background:var(--err-bg);color:var(--err)}
+        @keyframes pulse-badge{0%,100%{opacity:.7}50%{opacity:1}}
+        .qc-query{font-size:12px;color:var(--t3);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .qc-meta{display:flex;align-items:center;gap:8px;margin-top:8px;font-family:var(--m);font-size:10px;color:var(--t4)}
+        .qc-meta .dot{width:4px;height:4px;background:var(--t4);border-radius:50%}
+
+        /* CUSTOM QUERY */
+        .custom-row{display:flex;gap:10px;margin-bottom:20px}
+        .custom-input{flex:1;font-family:var(--f);font-size:13px;padding:10px 14px;border:1px solid var(--brd);border-radius:var(--r);outline:none;transition:all .15s;background:var(--bg);color:var(--t1)}
+        .custom-input:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(0,82,204,.06)}
+        .custom-input::placeholder{color:var(--t4)}
+        .add-query-btn{font-family:var(--m);font-size:11px;font-weight:500;padding:10px 18px;background:var(--bg);color:var(--acc);border:1px solid var(--acc);border-radius:var(--r);cursor:pointer;transition:all .12s;white-space:nowrap}
+        .add-query-btn:hover{background:var(--acc-bg)}
+
+        /* RUN BUTTON */
+        .run-btn{font-family:var(--f);font-size:14px;font-weight:600;padding:14px 28px;background:var(--acc);color:#fff;border:none;border-radius:var(--r);cursor:pointer;width:100%;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 1px 2px rgba(0,82,204,.2)}
+        .run-btn:hover{background:var(--acc2);box-shadow:0 2px 8px rgba(0,82,204,.3)}
+        .run-btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+        .run-btn .sq{width:8px;height:8px;background:#fff;border-radius:1.5px}
+        .run-btn .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        /* PROGRESS BAR */
+        .progress-wrap{height:3px;background:var(--bg3);border-radius:2px;margin-top:16px;overflow:hidden;display:none}
+        .progress-wrap.vis{display:block}
+        .progress-bar{height:100%;background:var(--acc);border-radius:2px;transition:width .3s ease;width:0}
+
+        /* REPORT */
+        .report{display:none;margin-top:32px}
+        .report.vis{display:block;animation:fadeUp .3s ease}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+        /* REPORT HEADER */
+        .report-header{background:var(--dark);border-radius:var(--r3) var(--r3) 0 0;padding:28px 32px;color:#fff;position:relative;overflow:hidden}
+        .report-header::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#0052CC,#7DD3FC,#C4B5FD,#0052CC);background-size:200% 100%;animation:gradient-flow 3s linear infinite}
+        @keyframes gradient-flow{to{background-position:-200% 0}}
+        .rh-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+        .rh-logo{display:flex;align-items:center;gap:10px}
+        .rh-logo svg{height:18px;color:#fff}
+        .rh-logo .bolt{font-size:18px;color:#7DD3FC}
+        .rh-actions{display:flex;gap:8px}
+        .rh-btn{font-family:var(--m);font-size:10px;padding:6px 14px;border-radius:6px;cursor:pointer;transition:all .12s;border:1px solid #333;background:var(--dark3);color:#999}
+        .rh-btn:hover{background:var(--dark4);color:#ddd;border-color:#444}
+        .rh-title{font-size:22px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px}
+        .rh-date{font-family:var(--m);font-size:12px;color:#6B7280}
+        .rh-stats{display:flex;gap:20px;margin-top:14px}
+        .rh-stat{font-family:var(--m);font-size:11px;color:#6B7280;display:flex;align-items:center;gap:6px}
+        .rh-stat b{color:#D1D5DB;font-weight:500}
+        .rh-stat .dot{width:5px;height:5px;border-radius:50%;background:#4ADE80}
+
+        /* REPORT SECTIONS */
+        .report-body{background:var(--dark);border-radius:0 0 var(--r3) var(--r3);overflow:hidden}
+
+        .section{border-top:1px solid #1E1E1E;padding:28px 32px}
+        .section-header{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+        .section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+        .section-icon.funding{background:rgba(125,211,252,.1);color:#7DD3FC}
+        .section-icon.trends{background:rgba(196,181,253,.1);color:#C4B5FD}
+        .section-icon.synthesis{background:rgba(252,211,77,.1);color:#FCD34D}
+        .section-icon.custom{background:rgba(110,231,183,.1);color:#6EE7B7}
+        .section-title{font-family:var(--m);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#D1D5DB}
+        .section-count{font-family:var(--m);font-size:10px;color:#555;margin-left:auto}
+
+        /* BULLET ITEMS */
+        .bullet-list{display:flex;flex-direction:column;gap:12px}
+        .bullet-item{padding:14px 16px;background:var(--dark2);border:1px solid #1E1E1E;border-left:3px solid #3B82F6;border-radius:0 var(--r) var(--r) 0;transition:background .1s}
+        .bullet-item:hover{background:var(--dark3)}
+        .bullet-item:nth-child(2){border-left-color:#7DD3FC}
+        .bullet-item:nth-child(3){border-left-color:#C4B5FD}
+        .bullet-item:nth-child(4){border-left-color:#FCD34D}
+        .bullet-text{font-size:13px;line-height:1.7;color:#D1D5DB}
+        .bullet-text strong{color:#FCD34D;font-weight:600}
+        .bullet-text em{color:#F0ABFC;font-style:italic}
+        .bullet-text a{color:#7DD3FC;text-decoration:none}
+        .bullet-text a:hover{text-decoration:underline;color:#BAE6FD}
+        .bullet-source{display:flex;align-items:center;gap:6px;margin-top:8px;font-family:var(--m);font-size:10px;color:#555}
+        .bullet-source a{color:#7DD3FC;text-decoration:none;word-break:break-all}
+        .bullet-source a:hover{color:#BAE6FD;text-decoration:underline}
+
+        /* SYNTHESIS */
+        .synthesis-box{padding:20px;background:rgba(252,211,77,.04);border:1px solid rgba(252,211,77,.1);border-radius:var(--r2)}
+        .synthesis-text{font-size:14px;line-height:1.8;color:#E8ECF1;font-style:italic}
+
+        /* SOURCES PANEL */
+        .sources-panel{border-top:1px solid #1E1E1E;padding:20px 32px}
+        .sources-title{font-family:var(--m);font-size:10px;color:#6EE7B7;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+        .source-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+        .source-item{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--dark2);border:1px solid #1E1E1E;border-radius:var(--r);transition:background .1s;font-size:12px}
+        .source-item:hover{background:var(--dark3)}
+        .source-num{font-family:var(--m);font-size:9px;color:#555;min-width:16px}
+        .source-info{flex:1;min-width:0}
+        .source-name{color:#7DD3FC;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;font-size:12px}
+        .source-domain{font-family:var(--m);font-size:9px;color:#555;margin-top:1px}
+        .source-item a{text-decoration:none;display:block}
+        .source-item a:hover .source-name{color:#BAE6FD}
+
+        /* REPORT FOOTER */
+        .report-footer{border-top:1px solid #1E1E1E;padding:16px 32px;display:flex;align-items:center;justify-content:space-between}
+        .rf-left{font-family:var(--m);font-size:10px;color:#555;display:flex;align-items:center;gap:8px}
+        .rf-left svg{height:14px;color:#555}
+        .rf-right{display:flex;gap:8px}
+
+        /* NO DATA */
+        .no-data{padding:20px;text-align:center;font-family:var(--m);font-size:12px;color:#555;font-style:italic}
+
+        /* ERROR IN SECTION */
+        .section-error{padding:14px 16px;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.15);border-radius:var(--r);color:#FCA5A5;font-size:12px}
+        .section-error b{display:block;color:#F87171;font-weight:600;margin-bottom:2px}
+
+        /* EDITING QUERIES */
+        .query-edit{margin-bottom:12px}
+        .qe-row{display:flex;gap:8px;margin-bottom:8px;align-items:start}
+        .qe-label{font-family:var(--f);font-size:13px;font-weight:600;padding:10px 14px;border:1px solid var(--brd);border-radius:var(--r);flex:1;outline:none;transition:all .15s;background:var(--bg);color:var(--t1)}
+        .qe-label:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(0,82,204,.06)}
+        .qe-query{font-family:var(--f);font-size:12px;padding:8px 14px;border:1px solid var(--brd);border-radius:var(--r);flex:2;outline:none;transition:all .15s;background:var(--bg);color:var(--t2);min-height:38px;resize:none}
+        .qe-query:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(0,82,204,.06)}
+        .qe-depth{font-family:var(--f);font-size:12px;padding:8px;border:1px solid var(--brd);border-radius:var(--r);background:var(--bg);color:var(--t1);outline:none;cursor:pointer;width:100px}
+        .qe-remove{font-size:18px;color:var(--t4);background:none;border:none;cursor:pointer;padding:8px 4px;transition:color .1s;flex-shrink:0}
+        .qe-remove:hover{color:var(--err)}
+
+        /* DEPTH SELECT */
+        .depth-select-row{display:flex;gap:8px;margin-bottom:20px}
+        .depth-opt{flex:1;border:1.5px solid var(--brd);border-radius:var(--r2);padding:12px 14px;cursor:pointer;transition:all .12s;background:var(--bg);text-align:center}
+        .depth-opt:hover{border-color:var(--brd2)}
+        .depth-opt.on{border-color:var(--acc);background:var(--acc-light)}
+        .depth-opt .d-name{font-size:14px;font-weight:600;margin-bottom:2px}
+        .depth-opt .d-price{font-family:var(--m);font-size:10px;color:var(--t3)}
+        .depth-opt.on .d-price{color:var(--acc)}
+        .depth-opt .d-desc{font-size:11px;color:var(--t3);margin-top:4px;line-height:1.4}
+
+        /* EMPTY STATE */
+        .empty-state{text-align:center;padding:60px 20px;color:var(--t3)}
+        .empty-state svg{width:120px;height:120px;color:var(--brd);margin-bottom:16px}
+        .empty-state h3{font-size:16px;font-weight:600;color:var(--t2);margin-bottom:6px}
+        .empty-state p{font-size:13px;color:var(--t3);max-width:360px;margin:0 auto}
+
+        /* TOAST */
+        .toast{position:fixed;bottom:24px;right:24px;font-family:var(--m);font-size:12px;padding:12px 20px;border-radius:var(--r);background:var(--dark);color:#fff;box-shadow:var(--shadow-lg);z-index:200;transform:translateY(80px);opacity:0;transition:all .3s ease;display:flex;align-items:center;gap:8px}
+        .toast.vis{transform:translateY(0);opacity:1}
+        .toast .t-icon{font-size:14px}
+
+        /* RESPONSIVE */
+        @media(max-width:768px){
+            .nav{padding:0 16px}
+            .nav-r{display:none}
+            .hero{padding:32px 16px 28px}
+            .hero h1{font-size:26px}
+            .container{padding:20px 12px 48px}
+            .queries-grid{grid-template-columns:1fr}
+            .source-list{grid-template-columns:1fr}
+            .section{padding:20px 16px}
+            .report-header{padding:20px 16px}
+            .report-footer{padding:12px 16px}
+            .sources-panel{padding:16px}
+            .rh-stats{flex-wrap:wrap;gap:10px}
+            .depth-select-row{flex-direction:column}
+        }
+
+        /* PRINT */
+        @media print{
+            .nav,.setup-card,.hero{display:none}
+            .report{margin-top:0}
+            body{background:#fff}
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <div class="nav-l">
+        <div class="nav-logo">
+            <svg viewBox="0 0 501 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M150.677 72.711C146.612 70.249 137.909 69.542 124.794 70.608C128.992 57.678 133.757 35.391 121.323 25.153C115.886 20.674 107.471 19.044 97.616 20.559C94.676 21.014 91.575 21.745 88.388 22.732C78.867 8.282 66.295 0 53.861 0C39.429 0 26.13 9.338 16.408 26.287C5.675 45.014 0 71.963 0 104.23V104.533L3.604 106.94L3.883 106.825C30.575 95.563 67.576 85.072 100.593 79.404C101.604 87.644 102.116 95.995 102.116 104.235V104.52L105.491 107L105.761 106.913C106.255 106.752 155.159 90.882 153.979 77.589C153.856 76.202 153.183 74.227 150.677 72.711ZM148.409 78.09C148.715 81.544 133.236 91.057 111.838 98.888C115.968 92.1 119.818 84.172 122.777 76.358C135.659 75.141 144.531 75.555 147.792 77.53C148.377 77.883 148.409 78.09 148.409 78.09ZM116.668 77.011C114.084 83.377 110.951 89.633 107.54 95.246C107.334 89.514 106.913 83.882 106.296 78.462C109.922 77.897 113.407 77.41 116.668 77.011ZM117.774 29.498C125.379 35.759 125.782 51.321 118.867 71.177C114.747 71.632 110.284 72.238 105.596 72.978C103.049 55.174 98.284 39.966 91.424 27.753C94.566 26.816 96.967 26.347 98.462 26.113C106.721 24.84 113.581 26.044 117.774 29.498ZM53.857 5.622C65.056 5.622 74.888 12.002 83.092 24.592C57.703 34.541 30.319 59.409 5.78 94.8C7.431 51.481 23.03 5.622 53.861 5.622M10.193 98.241C40.75 53.934 68.202 36.443 86.074 29.585C92.449 41.238 97.205 56.552 99.843 73.933C70.521 79.032 35.638 88.498 10.193 98.241Z" fill="currentColor"/>
+                <path d="M192.855 23.754H183.758V104.356H192.855V23.754Z" fill="currentColor"/>
+                <path d="M221.066 48.047H211.969V104.351H221.066V48.047Z" fill="currentColor"/>
+                <path d="M240.18 104.356V48.052H249.048V57.611H250.66C251.888 54.922 253.981 52.485 256.935 50.296C259.89 48.107 264.246 47.012 270.008 47.012C274.227 47.012 278.01 47.896 281.349 49.659C284.688 51.427 287.354 54.033 289.351 57.491C291.348 60.945 292.347 65.204 292.347 70.27V104.356H283.25V70.962C283.25 65.36 281.848 61.288 279.045 58.756C276.242 56.223 272.463 54.959 267.704 54.959C262.253 54.959 257.819 56.727 254.402 60.253C250.985 63.785 249.277 69.043 249.277 76.027V104.351H240.18V104.356Z" fill="currentColor"/>
+                <path d="M310.769 104.356V23.754H319.866V71.191H321.478L347.271 48.047H359.936L328.734 75.455L360.861 104.356H348.311L321.478 79.829H319.866V104.356H310.769Z" fill="currentColor"/>
+                <path d="M394.252 105.391C390.18 105.391 386.438 104.507 383.026 102.744C379.609 100.98 376.925 98.351 374.964 94.857C373.008 91.366 372.028 87.125 372.028 82.133V48.047H381.125V81.441C381.125 87.043 382.522 91.115 385.33 93.647C388.128 96.18 391.912 97.449 396.671 97.449C402.044 97.449 406.459 95.686 409.913 92.154C413.367 88.623 415.093 83.365 415.093 76.38V48.052H424.19V104.36H415.322V94.802H413.71C412.478 97.49 410.371 99.927 407.375 102.112C404.38 104.301 400.005 105.395 394.248 105.395" fill="currentColor"/>
+                <path d="M443.195 127.385V48.047H452.062V57.373H453.675C455.131 54.533 457.49 52 460.756 49.774C464.017 47.548 468.566 46.435 474.401 46.435C479.238 46.435 483.672 47.603 487.703 49.948C491.734 52.289 494.958 55.609 497.372 59.905C499.791 64.206 501 69.386 501 75.451V76.948C501 82.935 499.809 88.115 497.427 92.493C495.045 96.867 491.844 100.206 487.813 102.51C483.782 104.814 479.312 105.964 474.397 105.964C470.48 105.964 467.16 105.446 464.434 104.411C461.709 103.376 459.501 102.052 457.811 100.44C456.121 98.828 454.815 97.179 453.895 95.489H452.282V127.385H443.186H443.195ZM471.983 97.907C477.814 97.907 482.559 96.048 486.205 92.324C489.851 88.605 491.674 83.402 491.674 76.724V75.689C491.674 69.011 489.851 63.812 486.205 60.089C482.559 56.365 477.818 54.505 471.983 54.505C466.147 54.505 461.484 56.37 457.76 60.089C454.037 63.812 452.177 69.011 452.177 75.689V76.724C452.177 83.402 454.037 88.605 457.76 92.324C461.484 96.048 466.225 97.907 471.983 97.907Z" fill="currentColor"/>
+                <path d="M221.922 34.261C221.922 37.329 219.435 39.812 216.371 39.812C213.307 39.812 210.819 37.325 210.819 34.261C210.819 31.197 213.307 28.71 216.371 28.71C219.435 28.71 221.922 31.197 221.922 34.261Z" fill="currentColor"/>
+            </svg>
+        </div>
+        <div class="nav-sep"></div>
+        <span class="nav-t">Morning Report</span>
+        <span class="nav-tag">EdTech</span>
+    </div>
+    <div class="nav-r">
+        <span class="nav-kl">API Key</span>
+        <input type="password" class="nav-ki" id="apiKeyInput" placeholder="lk-..." autocomplete="off" spellcheck="false">
+        <span class="nav-ks" id="apiKeyHint"></span>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-badge"><span class="dot"></span> Live Intelligence</div>
+    <h1>EdTech Morning Report</h1>
+    <div class="hero-date" id="heroDate"></div>
+    <p class="hero-sub">Real-time insights on Indian EdTech funding, student behavior, and market trends &mdash; powered by Linkup's deep web search.</p>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+    <!-- SETUP -->
+    <div class="setup-card">
+        <div class="setup-header">
+            <span class="setup-title">Report Queries</span>
+            <span class="setup-status" id="setupStatus">Configure and generate your report</span>
+        </div>
+
+        <!-- Depth selector -->
+        <div class="depth-select-row">
+            <div class="depth-opt" data-v="fast" onclick="setDepth('fast')">
+                <div class="d-name">Fast</div>
+                <div class="d-price">$0.001 / query</div>
+                <div class="d-desc">Quick keyword search, &lt;1s</div>
+            </div>
+            <div class="depth-opt on" data-v="standard" onclick="setDepth('standard')">
+                <div class="d-name">Standard</div>
+                <div class="d-price">$0.005 / query</div>
+                <div class="d-desc">Parallel search, 1-3s</div>
+            </div>
+            <div class="depth-opt" data-v="deep" onclick="setDepth('deep')">
+                <div class="d-name">Deep</div>
+                <div class="d-price">$0.05 / query</div>
+                <div class="d-desc">Agentic multi-pass, 5-30s</div>
+            </div>
+        </div>
+
+        <!-- Query cards -->
+        <div class="queries-grid" id="queriesGrid"></div>
+
+        <!-- Add custom query -->
+        <div class="custom-row">
+            <input type="text" class="custom-input" id="customQueryInput" placeholder="Add a custom query, e.g. &quot;AI tutoring startups Series A rounds 2026&quot;">
+            <button class="add-query-btn" onclick="addCustomQuery()">+ Add</button>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-wrap" id="progressWrap">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- Run -->
+        <button class="run-btn" id="runBtn" onclick="generateReport()">
+            <span class="sq"></span>
+            Generate Report
+        </button>
+    </div>
+
+    <!-- REPORT OUTPUT -->
+    <div class="report" id="report"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="t-icon"></span><span class="t-msg"></span></div>
+
+<script>
+// ════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════
+const LINKUP_API_URL = 'https://api.linkup.so/v1/search';
+let currentDepth = 'standard';
+
+let queries = [
+    {
+        label: 'EdTech Funding & Startups',
+        query: 'India EdTech startup funding news this week 2026',
+        icon: 'funding',
+        emoji: '\u{1F4B0}'
+    },
+    {
+        label: 'Student Learning Behavior',
+        query: 'India student learning behavior trends 2026',
+        icon: 'trends',
+        emoji: '\u{1F4DA}'
+    },
+    {
+        label: 'Government Policy & Regulation',
+        query: 'India education policy NEP regulation updates 2026',
+        icon: 'custom',
+        emoji: '\u{1F3DB}'
+    },
+    {
+        label: 'AI in Education',
+        query: 'AI tutoring personalized learning India EdTech 2026',
+        icon: 'custom',
+        emoji: '\u{1F916}'
+    }
+];
+
+// ════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════
+const apiKeyInput = document.getElementById('apiKeyInput');
+const apiKeyHint = document.getElementById('apiKeyHint');
+
+// Date
+const now = new Date();
+document.getElementById('heroDate').textContent = now.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+// API key persistence
+const savedKey = localStorage.getItem('linkup_api_key');
+if (savedKey) { apiKeyInput.value = savedKey; apiKeyHint.textContent = 'saved'; }
+apiKeyInput.addEventListener('input', () => {
+    const k = apiKeyInput.value.trim();
+    if (k) { localStorage.setItem('linkup_api_key', k); apiKeyHint.textContent = 'saved'; apiKeyInput.classList.add('ok'); setTimeout(() => apiKeyInput.classList.remove('ok'), 1500); }
+    else { localStorage.removeItem('linkup_api_key'); apiKeyHint.textContent = ''; }
+});
+function getApiKey() { return apiKeyInput.value.trim(); }
+
+// Render query cards
+function renderQueries() {
+    const grid = document.getElementById('queriesGrid');
+    grid.innerHTML = queries.map((q, i) => `
+        <div class="query-card" id="qc-${i}">
+            <div class="qc-top">
+                <span class="qc-label">${q.emoji} ${esc(q.label)}</span>
+                <span class="qc-badge pending" id="qb-${i}">Pending</span>
+            </div>
+            <div class="qc-query">${esc(q.query)}</div>
+            <div class="qc-meta">
+                <span>deep search</span>
+                <span class="dot"></span>
+                <span>sourcedAnswer</span>
+                ${i >= 2 ? `<button onclick="removeQuery(${i})" style="margin-left:auto;font-family:var(--m);font-size:9px;color:var(--t4);background:none;border:none;cursor:pointer;padding:2px 4px;" title="Remove">&times; remove</button>` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+renderQueries();
+
+// Depth
+function setDepth(v) {
+    currentDepth = v;
+    document.querySelectorAll('.depth-opt').forEach(c => c.classList.toggle('on', c.dataset.v === v));
+}
+
+// Add/remove queries
+function addCustomQuery() {
+    const input = document.getElementById('customQueryInput');
+    const q = input.value.trim();
+    if (!q) return;
+    // Auto-generate label from query
+    const label = q.length > 40 ? q.slice(0, 37) + '...' : q;
+    queries.push({ label, query: q, icon: 'custom', emoji: '\u{1F50D}' });
+    input.value = '';
+    renderQueries();
+    showToast('\u2713', 'Query added');
+}
+document.getElementById('customQueryInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addCustomQuery();
+});
+
+function removeQuery(i) {
+    queries.splice(i, 1);
+    renderQueries();
+}
+
+// ════════════════════════════════════════════════════════
+// GENERATE REPORT
+// ════════════════════════════════════════════════════════
+async function generateReport() {
+    const apiKey = getApiKey();
+    if (!apiKey) { showToast('\u26A0', 'Enter your Linkup API key'); apiKeyInput.focus(); return; }
+    if (!queries.length) { showToast('\u26A0', 'Add at least one query'); return; }
+
+    const btn = document.getElementById('runBtn');
+    const progressWrap = document.getElementById('progressWrap');
+    const progressBar = document.getElementById('progressBar');
+
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div> Generating...';
+    progressWrap.classList.add('vis');
+    progressBar.style.width = '0%';
+    document.getElementById('setupStatus').textContent = 'Fetching data...';
+
+    // Reset card states
+    queries.forEach((_, i) => {
+        const card = document.getElementById(`qc-${i}`);
+        const badge = document.getElementById(`qb-${i}`);
+        if (card) { card.className = 'query-card'; }
+        if (badge) { badge.className = 'qc-badge pending'; badge.textContent = 'Pending'; }
+    });
+
+    const results = [];
+    const totalTime = { start: Date.now() };
+    let totalSources = 0;
+
+    // Run queries sequentially for visible progress
+    for (let i = 0; i < queries.length; i++) {
+        const card = document.getElementById(`qc-${i}`);
+        const badge = document.getElementById(`qb-${i}`);
+
+        if (card) card.classList.add('active');
+        if (badge) { badge.className = 'qc-badge running'; badge.textContent = 'Searching...'; }
+        progressBar.style.width = `${((i) / queries.length) * 100}%`;
+
+        try {
+            const data = await fetchLinkup(queries[i].query, apiKey);
+            results.push(data);
+            const srcCount = (data.sources || []).length;
+            totalSources += srcCount;
+
+            if (card) { card.classList.remove('active'); card.classList.add('done'); }
+            if (badge) { badge.className = 'qc-badge done'; badge.textContent = `${srcCount} sources`; }
+        } catch (err) {
+            results.push({ error: err.message });
+            if (card) { card.classList.remove('active'); card.classList.add('error'); }
+            if (badge) { badge.className = 'qc-badge error'; badge.textContent = 'Failed'; }
+        }
+
+        progressBar.style.width = `${((i + 1) / queries.length) * 100}%`;
+    }
+
+    const totalElapsed = ((Date.now() - totalTime.start) / 1000).toFixed(1);
+
+    // Render report
+    renderReport(results, totalElapsed, totalSources);
+
+    btn.disabled = false;
+    btn.innerHTML = '<span class="sq"></span> Regenerate Report';
+    document.getElementById('setupStatus').textContent = `Report generated in ${totalElapsed}s`;
+    showToast('\u2713', `Report ready \u2014 ${totalSources} sources in ${totalElapsed}s`);
+}
+
+async function fetchLinkup(query, apiKey) {
+    const headers = { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' };
+    const payload = { q: query, depth: currentDepth, outputType: 'sourcedAnswer' };
+
+    const response = await fetch(LINKUP_API_URL, { method: 'POST', headers, body: JSON.stringify(payload) });
+
+    if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        const msg = err.message || (err.error && err.error.message) || (typeof err.error === 'string' ? err.error : null) || err.detail || `HTTP ${response.status}`;
+        throw new Error(msg);
+    }
+
+    return await response.json();
+}
+
+// ════════════════════════════════════════════════════════
+// RENDER REPORT
+// ════════════════════════════════════════════════════════
+function renderReport(results, totalElapsed, totalSources) {
+    const report = document.getElementById('report');
+    const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+    let html = '';
+
+    // Header
+    html += `
+    <div class="report-header">
+        <div class="rh-top">
+            <div class="rh-logo">
+                <span class="bolt">\u26A1</span>
+                <svg viewBox="0 0 501 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M150.677 72.711C146.612 70.249 137.909 69.542 124.794 70.608C128.992 57.678 133.757 35.391 121.323 25.153C115.886 20.674 107.471 19.044 97.616 20.559C94.676 21.014 91.575 21.745 88.388 22.732C78.867 8.282 66.295 0 53.861 0C39.429 0 26.13 9.338 16.408 26.287C5.675 45.014 0 71.963 0 104.23V104.533L3.604 106.94L3.883 106.825C30.575 95.563 67.576 85.072 100.593 79.404C101.604 87.644 102.116 95.995 102.116 104.235V104.52L105.491 107L105.761 106.913C106.255 106.752 155.159 90.882 153.979 77.589C153.856 76.202 153.183 74.227 150.677 72.711ZM148.409 78.09C148.715 81.544 133.236 91.057 111.838 98.888C115.968 92.1 119.818 84.172 122.777 76.358C135.659 75.141 144.531 75.555 147.792 77.53C148.377 77.883 148.409 78.09 148.409 78.09ZM116.668 77.011C114.084 83.377 110.951 89.633 107.54 95.246C107.334 89.514 106.913 83.882 106.296 78.462C109.922 77.897 113.407 77.41 116.668 77.011ZM117.774 29.498C125.379 35.759 125.782 51.321 118.867 71.177C114.747 71.632 110.284 72.238 105.596 72.978C103.049 55.174 98.284 39.966 91.424 27.753C94.566 26.816 96.967 26.347 98.462 26.113C106.721 24.84 113.581 26.044 117.774 29.498ZM53.857 5.622C65.056 5.622 74.888 12.002 83.092 24.592C57.703 34.541 30.319 59.409 5.78 94.8C7.431 51.481 23.03 5.622 53.861 5.622M10.193 98.241C40.75 53.934 68.202 36.443 86.074 29.585C92.449 41.238 97.205 56.552 99.843 73.933C70.521 79.032 35.638 88.498 10.193 98.241Z" fill="currentColor"/>
+                    <path d="M192.855 23.754H183.758V104.356H192.855V23.754Z" fill="currentColor"/>
+                    <path d="M221.066 48.047H211.969V104.351H221.066V48.047Z" fill="currentColor"/>
+                    <path d="M240.18 104.356V48.052H249.048V57.611H250.66C251.888 54.922 253.981 52.485 256.935 50.296C259.89 48.107 264.246 47.012 270.008 47.012C274.227 47.012 278.01 47.896 281.349 49.659C284.688 51.427 287.354 54.033 289.351 57.491C291.348 60.945 292.347 65.204 292.347 70.27V104.356H283.25V70.962C283.25 65.36 281.848 61.288 279.045 58.756C276.242 56.223 272.463 54.959 267.704 54.959C262.253 54.959 257.819 56.727 254.402 60.253C250.985 63.785 249.277 69.043 249.277 76.027V104.351H240.18V104.356Z" fill="currentColor"/>
+                    <path d="M310.769 104.356V23.754H319.866V71.191H321.478L347.271 48.047H359.936L328.734 75.455L360.861 104.356H348.311L321.478 79.829H319.866V104.356H310.769Z" fill="currentColor"/>
+                    <path d="M394.252 105.391C390.18 105.391 386.438 104.507 383.026 102.744C379.609 100.98 376.925 98.351 374.964 94.857C373.008 91.366 372.028 87.125 372.028 82.133V48.047H381.125V81.441C381.125 87.043 382.522 91.115 385.33 93.647C388.128 96.18 391.912 97.449 396.671 97.449C402.044 97.449 406.459 95.686 409.913 92.154C413.367 88.623 415.093 83.365 415.093 76.38V48.052H424.19V104.36H415.322V94.802H413.71C412.478 97.49 410.371 99.927 407.375 102.112C404.38 104.301 400.005 105.395 394.248 105.395" fill="currentColor"/>
+                    <path d="M443.195 127.385V48.047H452.062V57.373H453.675C455.131 54.533 457.49 52 460.756 49.774C464.017 47.548 468.566 46.435 474.401 46.435C479.238 46.435 483.672 47.603 487.703 49.948C491.734 52.289 494.958 55.609 497.372 59.905C499.791 64.206 501 69.386 501 75.451V76.948C501 82.935 499.809 88.115 497.427 92.493C495.045 96.867 491.844 100.206 487.813 102.51C483.782 104.814 479.312 105.964 474.397 105.964C470.48 105.964 467.16 105.446 464.434 104.411C461.709 103.376 459.501 102.052 457.811 100.44C456.121 98.828 454.815 97.179 453.895 95.489H452.282V127.385H443.186H443.195ZM471.983 97.907C477.814 97.907 482.559 96.048 486.205 92.324C489.851 88.605 491.674 83.402 491.674 76.724V75.689C491.674 69.011 489.851 63.812 486.205 60.089C482.559 56.365 477.818 54.505 471.983 54.505C466.147 54.505 461.484 56.37 457.76 60.089C454.037 63.812 452.177 69.011 452.177 75.689V76.724C452.177 83.402 454.037 88.605 457.76 92.324C461.484 96.048 466.225 97.907 471.983 97.907Z" fill="currentColor"/>
+                    <path d="M221.922 34.261C221.922 37.329 219.435 39.812 216.371 39.812C213.307 39.812 210.819 37.325 210.819 34.261C210.819 31.197 213.307 28.71 216.371 28.71C219.435 28.71 221.922 31.197 221.922 34.261Z" fill="currentColor"/>
+                </svg>
+            </div>
+            <div class="rh-actions">
+                <button class="rh-btn" onclick="copyReport()">Copy as text</button>
+                <button class="rh-btn" onclick="window.print()">Print</button>
+            </div>
+        </div>
+        <div class="rh-title">EdTech Morning Report</div>
+        <div class="rh-date">${esc(dateStr)} &middot; ${esc(timeStr)}</div>
+        <div class="rh-stats">
+            <div class="rh-stat"><span class="dot"></span> <b>${queries.length}</b> queries</div>
+            <div class="rh-stat"><b>${totalSources}</b> sources</div>
+            <div class="rh-stat"><b>${totalElapsed}s</b> total</div>
+            <div class="rh-stat">depth <b>${currentDepth}</b></div>
+        </div>
+    </div>
+    <div class="report-body">`;
+
+    // Sections
+    const sectionIcons = ['funding', 'trends', 'custom', 'custom'];
+    const sectionEmojis = ['\u{1F4B0}', '\u{1F4DA}', '\u{1F3DB}', '\u{1F916}', '\u{1F50D}', '\u{1F4CA}', '\u{1F30D}', '\u{2B50}'];
+    const allSources = [];
+
+    queries.forEach((q, i) => {
+        const data = results[i];
+        const icon = q.icon || sectionIcons[i % sectionIcons.length];
+        const emoji = q.emoji || sectionEmojis[i % sectionEmojis.length];
+
+        html += `<div class="section">`;
+        html += `<div class="section-header">
+            <div class="section-icon ${esc(icon)}">${emoji}</div>
+            <span class="section-title">${esc(q.label)}</span>`;
+
+        if (data && !data.error) {
+            const srcCount = (data.sources || []).length;
+            html += `<span class="section-count">${srcCount} source${srcCount !== 1 ? 's' : ''}</span>`;
+        }
+        html += `</div>`;
+
+        if (data && data.error) {
+            html += `<div class="section-error"><b>Error</b>${esc(data.error)}</div>`;
+        } else if (data) {
+            const bullets = extractBullets(data);
+            if (bullets.length) {
+                html += `<div class="bullet-list">`;
+                bullets.forEach(b => {
+                    html += `<div class="bullet-item">
+                        <div class="bullet-text">${renderMarkdown(b.text)}</div>
+                        ${b.url ? `<div class="bullet-source"><span>\u{1F517}</span> <a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(truncUrl(b.url))}</a></div>` : ''}
+                    </div>`;
+                });
+                html += `</div>`;
+            } else {
+                html += `<div class="no-data">No data retrieved for this section.</div>`;
+            }
+
+            // Collect sources
+            (data.sources || []).forEach(s => {
+                if (s && s.url && !allSources.find(x => x.url === s.url)) {
+                    allSources.push(s);
+                }
+            });
+        } else {
+            html += `<div class="no-data">No data retrieved for this section.</div>`;
+        }
+
+        html += `</div>`;
+    });
+
+    // Synthesis
+    html += `<div class="section">
+        <div class="section-header">
+            <div class="section-icon synthesis">\u{1F4A1}</div>
+            <span class="section-title">So What?</span>
+        </div>`;
+
+    const synthesis = buildSynthesis(results);
+    if (synthesis) {
+        html += `<div class="synthesis-box"><div class="synthesis-text">${renderMarkdown(synthesis)}</div></div>`;
+    } else {
+        html += `<div class="no-data">Insufficient data to generate synthesis.</div>`;
+    }
+    html += `</div>`;
+
+    // Sources panel
+    if (allSources.length) {
+        html += `<div class="sources-panel">
+            <div class="sources-title">All Sources (${allSources.length})</div>
+            <div class="source-list">`;
+        allSources.slice(0, 12).forEach((s, i) => {
+            let domain = '';
+            try { domain = new URL(s.url).hostname.replace('www.', ''); } catch(e) { domain = s.url; }
+            const name = s.name || s.title || domain;
+            html += `<div class="source-item">
+                <span class="source-num">${i + 1}</span>
+                <div class="source-info">
+                    <a href="${esc(s.url)}" target="_blank" rel="noopener">
+                        <span class="source-name">${esc(name)}</span>
+                        <span class="source-domain">${esc(domain)}</span>
+                    </a>
+                </div>
+            </div>`;
+        });
+        html += `</div></div>`;
+    }
+
+    // Footer
+    html += `<div class="report-footer">
+        <div class="rf-left">
+            <svg viewBox="0 0 501 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M150.677 72.711C146.612 70.249 137.909 69.542 124.794 70.608C128.992 57.678 133.757 35.391 121.323 25.153C115.886 20.674 107.471 19.044 97.616 20.559C94.676 21.014 91.575 21.745 88.388 22.732C78.867 8.282 66.295 0 53.861 0C39.429 0 26.13 9.338 16.408 26.287C5.675 45.014 0 71.963 0 104.23V104.533L3.604 106.94L3.883 106.825C30.575 95.563 67.576 85.072 100.593 79.404C101.604 87.644 102.116 95.995 102.116 104.235V104.52L105.491 107L105.761 106.913C106.255 106.752 155.159 90.882 153.979 77.589C153.856 76.202 153.183 74.227 150.677 72.711Z" fill="currentColor"/>
+                <path d="M192.855 23.754H183.758V104.356H192.855V23.754Z" fill="currentColor"/>
+                <path d="M221.066 48.047H211.969V104.351H221.066V48.047Z" fill="currentColor"/>
+                <path d="M240.18 104.356V48.052H249.048V57.611H250.66C251.888 54.922 253.981 52.485 256.935 50.296C259.89 48.107 264.246 47.012 270.008 47.012C274.227 47.012 278.01 47.896 281.349 49.659C284.688 51.427 287.354 54.033 289.351 57.491C291.348 60.945 292.347 65.204 292.347 70.27V104.356H283.25V70.962C283.25 65.36 281.848 61.288 279.045 58.756C276.242 56.223 272.463 54.959 267.704 54.959C262.253 54.959 257.819 56.727 254.402 60.253C250.985 63.785 249.277 69.043 249.277 76.027V104.351H240.18V104.356Z" fill="currentColor"/>
+                <path d="M310.769 104.356V23.754H319.866V71.191H321.478L347.271 48.047H359.936L328.734 75.455L360.861 104.356H348.311L321.478 79.829H319.866V104.356H310.769Z" fill="currentColor"/>
+                <path d="M394.252 105.391C390.18 105.391 386.438 104.507 383.026 102.744C379.609 100.98 376.925 98.351 374.964 94.857C373.008 91.366 372.028 87.125 372.028 82.133V48.047H381.125V81.441C381.125 87.043 382.522 91.115 385.33 93.647C388.128 96.18 391.912 97.449 396.671 97.449C402.044 97.449 406.459 95.686 409.913 92.154C413.367 88.623 415.093 83.365 415.093 76.38V48.052H424.19V104.36H415.322V94.802H413.71C412.478 97.49 410.371 99.927 407.375 102.112C404.38 104.301 400.005 105.395 394.248 105.395" fill="currentColor"/>
+                <path d="M443.195 127.385V48.047H452.062V57.373H453.675C455.131 54.533 457.49 52 460.756 49.774C464.017 47.548 468.566 46.435 474.401 46.435C479.238 46.435 483.672 47.603 487.703 49.948C491.734 52.289 494.958 55.609 497.372 59.905C499.791 64.206 501 69.386 501 75.451V76.948C501 82.935 499.809 88.115 497.427 92.493C495.045 96.867 491.844 100.206 487.813 102.51C483.782 104.814 479.312 105.964 474.397 105.964C470.48 105.964 467.16 105.446 464.434 104.411C461.709 103.376 459.501 102.052 457.811 100.44C456.121 98.828 454.815 97.179 453.895 95.489H452.282V127.385H443.186H443.195ZM471.983 97.907C477.814 97.907 482.559 96.048 486.205 92.324C489.851 88.605 491.674 83.402 491.674 76.724V75.689C491.674 69.011 489.851 63.812 486.205 60.089C482.559 56.365 477.818 54.505 471.983 54.505C466.147 54.505 461.484 56.37 457.76 60.089C454.037 63.812 452.177 69.011 452.177 75.689V76.724C452.177 83.402 454.037 88.605 457.76 92.324C461.484 96.048 466.225 97.907 471.983 97.907Z" fill="currentColor"/>
+                <path d="M221.922 34.261C221.922 37.329 219.435 39.812 216.371 39.812C213.307 39.812 210.819 37.325 210.819 34.261C210.819 31.197 213.307 28.71 216.371 28.71C219.435 28.71 221.922 31.197 221.922 34.261Z" fill="currentColor"/>
+            </svg>
+            Powered by Linkup API &middot; linkup.so
+        </div>
+        <div class="rf-right">
+            <button class="rh-btn" onclick="copyReport()">Copy as text</button>
+        </div>
+    </div>`;
+
+    html += `</div>`; // close report-body
+
+    report.innerHTML = html;
+    report.classList.add('vis');
+
+    // Scroll to report
+    setTimeout(() => report.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+// ════════════════════════════════════════════════════════
+// DATA PROCESSING
+// ════════════════════════════════════════════════════════
+function extractBullets(data, maxBullets = 5) {
+    if (!data) return [];
+    const answer = data.answer || '';
+    const sources = data.sources || [];
+    if (!answer) return [];
+
+    const bullets = [];
+    const sentences = answer.replace(/\n/g, ' ').split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 20);
+
+    for (let i = 0; i < Math.min(sentences.length, maxBullets); i++) {
+        let text = sentences[i].trim();
+        if (!text.match(/[.!?]$/)) text += '.';
+        const url = i < sources.length ? sources[i].url : '';
+        bullets.push({ text, url });
+    }
+    return bullets;
+}
+
+function buildSynthesis(results) {
+    const answers = results.filter(r => r && !r.error && r.answer).map(r => r.answer);
+    if (answers.length < 2) return '';
+
+    function firstSentence(text) {
+        for (const s of text.replace(/\n/g, ' ').split(/(?<=[.!?])\s+/)) {
+            const t = s.trim();
+            if (t.length > 40) return t + (t.match(/[.!?]$/) ? '' : '.');
+        }
+        return text.slice(0, 200).trim();
+    }
+
+    const parts = answers.slice(0, 3).map(a => firstSentence(a));
+    let synthesis = parts[0] + ' ';
+
+    if (parts.length >= 2) {
+        synthesis += 'At the same time, ' + parts[1].charAt(0).toLowerCase() + parts[1].slice(1) + ' ';
+    }
+    if (parts.length >= 3) {
+        synthesis += 'Meanwhile, ' + parts[2].charAt(0).toLowerCase() + parts[2].slice(1) + ' ';
+    }
+
+    synthesis += 'For founders building in Indian education, this signals a window where capital is flowing toward products that meet learners where they are \u2014 mobile-first, vernacular, and outcome-driven.';
+    return synthesis;
+}
+
+// ════════════════════════════════════════════════════════
+// RENDERING HELPERS
+// ════════════════════════════════════════════════════════
+function renderMarkdown(text) {
+    if (!text) return '';
+    return text
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code style="font-family:var(--m);font-size:11px;background:#1E2127;padding:1px 5px;border-radius:3px;color:#FCA5A5">$1</code>')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+}
+
+function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+function truncUrl(url) {
+    try {
+        const u = new URL(url);
+        const path = u.pathname.length > 30 ? u.pathname.slice(0, 27) + '...' : u.pathname;
+        return u.hostname.replace('www.', '') + path;
+    } catch (e) {
+        return url.length > 60 ? url.slice(0, 57) + '...' : url;
+    }
+}
+
+// ════════════════════════════════════════════════════════
+// COPY REPORT
+// ════════════════════════════════════════════════════════
+function copyReport() {
+    const report = document.getElementById('report');
+    if (!report.classList.contains('vis')) return;
+
+    let text = `EDTECH MORNING REPORT\n`;
+    text += `${now.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}\n`;
+    text += `${'='.repeat(50)}\n\n`;
+
+    queries.forEach((q, i) => {
+        text += `## ${q.label.toUpperCase()}\n\n`;
+        const section = report.querySelectorAll('.section')[i];
+        if (section) {
+            section.querySelectorAll('.bullet-text').forEach(el => {
+                text += `  \u2022 ${el.textContent.trim()}\n`;
+            });
+        }
+        text += '\n';
+    });
+
+    text += `---\nPowered by Linkup API \u2014 linkup.so\n`;
+
+    navigator.clipboard.writeText(text).then(() => showToast('\u2713', 'Report copied to clipboard'));
+}
+
+// ════════════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════════════
+let toastTimeout;
+function showToast(icon, msg) {
+    const toast = document.getElementById('toast');
+    toast.querySelector('.t-icon').textContent = icon;
+    toast.querySelector('.t-msg').textContent = msg;
+    toast.classList.add('vis');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove('vis'), 3000);
+}
+</script>
+</body>
+</html>
